@@ -1,9 +1,17 @@
 // Variables that keep track of wins
 let playerWins = 0;
 let computerWins = 0;
+let score = `${playerWins}-${computerWins}`;
 // Declare player and computer selection
 let playerSelection;
 let computerSelection;
+
+const buttons = document.querySelectorAll(".main button");
+const results = document.querySelector(".main #results");
+
+buttons.forEach((button) => {
+    button.addEventListener("click", playRound);
+});
 
 // Returns either "Rock", "Paper" or "Scissors"
 function getComputerChoice() {
@@ -22,41 +30,62 @@ function getComputerChoice() {
 }
 
 // Play one round of rock, paper & scissors
-function playRound() {
+function playRound(event) {
 
     // Get player and computer choices
-    playerSelection = prompt("What's your guess? (Rock, paper or scissors) ").toLowerCase();
+    playerSelection = event.target.textContent.toLowerCase();
     computerSelection = getComputerChoice();
 
-    console.clear();
     // Add point to winner
     if (playerSelection === computerSelection) {
-        console.log("It's a Draw!");
+        return;
     }
     else if (playerSelection === "rock" && computerSelection === "scissors") {
         playerWins++;
-        console.log("You Won!");
     }
     else if (playerSelection === "paper" && computerSelection === "rock") {
         playerWins++;
-        console.log("You Won!");
     }
     else if (playerSelection === "scissors" && computerSelection === "paper") {
         playerWins++;
-        console.log("You Won!");
     }
     else {
         computerWins++;
-        console.log("You Lost!");
     }
+
+    // Prints score 
+    score = `${playerWins}-${computerWins}`;
+    results.textContent = `Player ${score} Computer`;
+
+    // Prints the winner of the series
+    if (isBestOfWinner(5)) {
+        if (playerWins > computerWins) {
+            results.textContent = `Player Wins!`;
+        }
+        else {
+            results.textContent = `Computer Wins!`;
+        }
+        resetScore();
+    }
+}
+
+// Checks if anyone won the Best Of X series
+function isBestOfWinner(rounds) {
+    if (playerWins >= rounds || computerWins >= rounds) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function resetScore() {
+    playerWins = 0;
+    computerWins = 0;
 }
 
 // Play rock, paper & scissors, best of 5 versus the computer
 function game() {
-    for (let round = 0; round < 5; round++) {
-        playRound();
-        console.log(`SCORE: ${playerWins}-${computerWins}`);
-    }
 
     // Prints the winner
     if (playerWins > computerWins) {
