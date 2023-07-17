@@ -8,6 +8,7 @@ let computerSelection;
 
 const buttons = document.querySelectorAll(".main button");
 const results = document.querySelector(".main #results");
+results.textContent = `Player ${score} Computer`;
 
 buttons.forEach((button) => {
     button.addEventListener("click", playRound);
@@ -33,7 +34,7 @@ function getComputerChoice() {
 function playRound(event) {
 
     // Get player and computer choices
-    playerSelection = event.target.textContent.toLowerCase();
+    playerSelection = this.getAttribute("id");
     computerSelection = getComputerChoice();
 
     // Add point to winner
@@ -83,21 +84,3 @@ function resetScore() {
     playerWins = 0;
     computerWins = 0;
 }
-
-// Play rock, paper & scissors, best of 5 versus the computer
-function game() {
-
-    // Prints the winner
-    if (playerWins > computerWins) {
-        console.log(`You WIN the BO5!`);
-    }
-    else if (computerWins > playerWins) {
-        console.log(`You LOSE the BO5!`);
-    }
-    else {
-        console.log(`The BO5 is a Draw!`);
-    }
-}
-
-// Starts playing rock, paper & scissors
-game();
